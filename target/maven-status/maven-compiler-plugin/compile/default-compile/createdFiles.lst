@@ -1,0 +1,9 @@
+com\core\walletservice\repositories\impl\CustomWalletRepositoryImpl.class
+com\core\walletservice\dto\TransactionDTO.class
+com\core\walletservice\repositories\CustomTransactionRepository.class
+com\core\walletservice\enums\TransactionType.class
+com\core\walletservice\entity\ProcessTransaction.class
+com\core\walletservice\services\impl\WalletServiceImpl.class
+com\core\walletservice\repositories\CustomWalletRepository.class
+com\core\walletservice\services\impl\TransactionServiceImpl.class
+com\core\walletservice\repositories\impl\CustomTransactionRepositoryImpl.class
