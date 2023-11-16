@@ -1,8 +1,16 @@
 package com.core.walletservice.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("process_transactions")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ProcessTransaction {
     private String actionType;
     private String action;

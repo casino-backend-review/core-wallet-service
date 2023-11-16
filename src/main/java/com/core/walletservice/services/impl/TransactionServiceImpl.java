@@ -12,6 +12,7 @@ import com.core.walletservice.exceptions.NotFoundException;
 import com.core.walletservice.repositories.TransactionRepository;
 import com.core.walletservice.repositories.WalletRepository;
 import com.core.walletservice.services.TransactionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,13 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.concurrent.ExecutionException;
 
 @Service
+@Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
-    private final  TransactionRepository transactionRepo;
+    private final TransactionRepository transactionRepo;
 
     private final WalletRepository walletRepo;
 
@@ -51,8 +54,8 @@ public class TransactionServiceImpl implements TransactionService {
             Instant start = Instant.now();
 
             Wallet userWallet = walletRepo.findByUsername(transactionRequest.getUsername());
-            if(userWallet==null) {
-                  throw new NotFoundException("Wallet not found");
+            if (userWallet == null) {
+                throw new NotFoundException("Wallet not found");
             }
             double walletAmountBefore = userWallet.getBalance();
             double walletAmountAfter = walletAmountBefore + transactionRequest.getAmount();
@@ -89,9 +92,9 @@ public class TransactionServiceImpl implements TransactionService {
             Instant start = Instant.now();
 
             Wallet userWallet = walletRepo.findByUsername(transactionRequest.getUsername());
-                    if(userWallet==null) {
-                    throw new NotFoundException("Wallet not found");
-                    }
+            if (userWallet == null) {
+                throw new NotFoundException("Wallet not found");
+            }
 
             double walletAmountBefore = userWallet.getBalance();
             double walletAmountAfter = walletAmountBefore - transactionRequest.getAmount();
@@ -149,7 +152,7 @@ public class TransactionServiceImpl implements TransactionService {
     private void processTransaction(String actionType, double beforeBalance, double amount, double afterBalance,
                                     String roundId, String gameId, String gameName, String refSale, String username,
                                     String upline, String productId, String description, boolean isFeatureBuy,
-                                    boolean isEndRound) {
+                                    boolean isEndRound) throws ExecutionException, InterruptedException {
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setActionType(actionType);
         transactionDTO.setAction(actionType);
@@ -187,6 +190,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDTO.setFRunningDate("");
 
         kafkaTemplate.send("transaction", transactionDTO);
+
     }
 
     private TransactionResponse createTransactionResponse(Wallet userWallet, double walletAmountBefore,

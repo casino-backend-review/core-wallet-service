@@ -2,7 +2,13 @@ package com.core.walletservice.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
+@Builder
 public class CreateWalletRequest {
 
     @NotNull(message = "Username is required")

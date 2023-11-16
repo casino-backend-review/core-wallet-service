@@ -2,8 +2,6 @@ package com.core.walletservice.repositories.impl;
 
 import com.core.walletservice.entity.Transaction;
 import com.core.walletservice.repositories.CustomTransactionRepository;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,8 +19,8 @@ public class CustomTransactionRepositoryImpl implements CustomTransactionReposit
 
     @Override
     public Transaction findRecentTransaction(String username, String action, double amount) {
-        Criteria criteria= Criteria.where("username").is(username).and("type").is(action).and("amount").is(amount);
-        Query query=new Query();
+        Criteria criteria = Criteria.where("username").is(username).and("type").is(action).and("amount").is(amount);
+        Query query = new Query();
         query.addCriteria(criteria);
         query.with(Sort.by(Sort.Order.desc("created_at")));
         return mongoTemplate.findOne(query, Transaction.class);

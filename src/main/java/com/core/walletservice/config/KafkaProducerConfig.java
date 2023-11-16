@@ -1,6 +1,6 @@
 package com.core.walletservice.config;
+
 import com.core.walletservice.dto.TransactionDTO;
-import org.apache.kafka.common.protocol.Message;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaProducerConfig{
+public class KafkaProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
