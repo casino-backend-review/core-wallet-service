@@ -1,5 +1,6 @@
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\core-wallet-service\src\main\java\com\core\walletservice\dto\TransactionDTO.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\core-wallet-service\src\main\java\com\core\walletservice\config\KafkaProducerConfig.java
+C:\Users\Rajeshree Kopulwar\Documents\GitHub\core-wallet-service\src\main\java\com\core\walletservice\config\SwaggerConfig.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\core-wallet-service\src\main\java\com\core\walletservice\entity\ProcessTransaction.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\core-wallet-service\src\main\java\com\core\walletservice\dto\TransactionRequest.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\core-wallet-service\src\main\java\com\core\walletservice\exceptions\BadRequestException.java
