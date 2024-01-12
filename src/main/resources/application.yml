@@ -1,11 +1,6 @@
 server:
-  port: 8086
-  servlet:
-    context-path: /wallet-service
-
+  port: 8082
 spring:
-  application:
-    name: Wallet-Service
   kafka:
     bootstrap-servers: localhost:9092
   data:
@@ -15,6 +10,3 @@ spring:
       database: testDb           # Database name
       authentication-database: admin   # Authentication database (optional)
       uri: mongodb://localhost:27017/testDb
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html

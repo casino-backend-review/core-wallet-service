@@ -62,12 +62,12 @@ public class TransactionServiceImpl implements TransactionService {
 
             checkRecentTransaction(transactionRequest.getUsername(), "deposit", transactionRequest.getAmount());
 
-       /*     Transaction financeTransaction = createAndSaveTransaction(TransactionType.DEPOSIT, transactionRequest,
-                    walletAmountBefore, userWallet);*/
+            Transaction financeTransaction = createAndSaveTransaction(TransactionType.DEPOSIT, transactionRequest,
+                    walletAmountBefore, userWallet);
 
-            processTransaction(transactionRequest.getRefId(),"deposit", walletAmountBefore, transactionRequest.getAmount(),
-                    walletAmountAfter, "", "", "", userWallet.getRefSale(),
-                    userWallet.getUsername(), userWallet.getUpline(), "withdrawal", transactionRequest.getRemark(), false, true);
+            processTransaction("deposit", walletAmountBefore, transactionRequest.getAmount(),
+                    walletAmountAfter, financeTransaction.getId().toString(), "", "", userWallet.getRefSale(),
+                    userWallet.getUsername(), userWallet.getUpline(), "withdrawal", "", false, true);
 
             userWallet.setBalance(walletAmountAfter);
             walletRepo.save(userWallet);
@@ -75,9 +75,9 @@ public class TransactionServiceImpl implements TransactionService {
             Instant end = Instant.now();
             System.out.println("Deposit transaction time: " + Duration.between(start, end));
 
-            return createTransactionResponse(userWallet, walletAmountBefore, walletAmountAfter, transactionRequest.getRefId());
-        } catch (Exception exception) {
-            throw new InternalErrorException("Failed to deposit :", exception);
+            return createTransactionResponse(userWallet, walletAmountBefore, walletAmountAfter, financeTransaction);
+        } catch (Exception e) {
+            throw new InternalErrorException("Failed to deposit", e);
         }
     }
 
@@ -105,12 +105,12 @@ public class TransactionServiceImpl implements TransactionService {
 
             checkRecentTransaction(transactionRequest.getUsername(), "withdraw", transactionRequest.getAmount());
 
-         /*   Transaction financeTransaction = createAndSaveTransaction(TransactionType.WITHDRAW, transactionRequest,
+            Transaction financeTransaction = createAndSaveTransaction(TransactionType.WITHDRAW, transactionRequest,
                     walletAmountBefore, userWallet);
-*/
-            processTransaction(transactionRequest.getRefId(),"withdraw", walletAmountBefore, transactionRequest.getAmount(),
-                    walletAmountAfter, "", "", "", userWallet.getRefSale(),
-                    userWallet.getUsername(), userWallet.getUpline(), "withdrawal", transactionRequest.getRemark(), false, true);
+
+            processTransaction("withdraw", walletAmountBefore, transactionRequest.getAmount(),
+                    walletAmountAfter, financeTransaction.getId().toString(), "", "", userWallet.getRefSale(),
+                    userWallet.getUsername(), userWallet.getUpline(), "withdrawal", "", false, true);
 
             userWallet.setBalance(walletAmountAfter);
             walletRepo.save(userWallet);
@@ -118,7 +118,7 @@ public class TransactionServiceImpl implements TransactionService {
             Instant end = Instant.now();
             System.out.println("Withdraw transaction time: " + Duration.between(start, end));
 
-            return createTransactionResponse(userWallet, walletAmountBefore, walletAmountAfter, transactionRequest.getRefId());
+            return createTransactionResponse(userWallet, walletAmountBefore, walletAmountAfter, financeTransaction);
         } catch (Exception e) {
             throw new InternalErrorException("Failed to withdraw", e);
         }
@@ -141,7 +141,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setAfterBalance(walletAmountBefore);
         transaction.setUsername(userWallet.getUsername());
         transaction.setUpline(userWallet.getUpline());
-        transaction.setCreatedBy(userWallet.getUpline());
+        transaction.setCreatedBy("DarkestKnight");
         transaction.setRemark(transactionRequest.getRemark());
         transaction.setRefID(transactionRequest.getRefId());
         transaction.setCreatedAt(LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));
@@ -149,12 +149,11 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepo.save(transaction);
     }
 
-    private void processTransaction(String refId,String actionType, double beforeBalance, double amount, double afterBalance,
+    private void processTransaction(String actionType, double beforeBalance, double amount, double afterBalance,
                                     String roundId, String gameId, String gameName, String refSale, String username,
                                     String upline, String productId, String description, boolean isFeatureBuy,
                                     boolean isEndRound) throws ExecutionException, InterruptedException {
         TransactionDTO transactionDTO = new TransactionDTO();
-        transactionDTO.setId(refId);
         transactionDTO.setActionType(actionType);
         transactionDTO.setAction(actionType);
 
@@ -195,14 +194,14 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private TransactionResponse createTransactionResponse(Wallet userWallet, double walletAmountBefore,
-                                                          double walletAmountAfter, String  refId) {
+                                                          double walletAmountAfter, Transaction financeTransaction) {
         return new TransactionResponse(
                 userWallet.getToken(),
                 userWallet.getUsername(),
                 walletAmountAfter,
                 walletAmountBefore,
                 walletAmountAfter,
-                refId
+                financeTransaction.getId()
         );
     }
 }
