@@ -2,7 +2,6 @@ package com.core.walletservice.repositories.impl;
 
 import com.core.walletservice.entity.Wallet;
 import com.core.walletservice.repositories.CustomWalletRepository;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -24,8 +23,7 @@ public class CustomWalletRepositoryImpl implements CustomWalletRepository {
         Criteria filterCriteria = Criteria.where("username").is(username);
         Query query = Query.query(filterCriteria);
         Update update = new Update().set("balance", newBalance);
-        FindAndModifyOptions  findAndModifyOptions=FindAndModifyOptions.options().returnNew(true);
-        Wallet wallet = mongoTemplate.findAndModify(query, update,findAndModifyOptions, Wallet.class);
+        Wallet wallet = mongoTemplate.findAndModify(query, update, Wallet.class);
         return wallet;
     }
 
