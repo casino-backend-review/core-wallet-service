@@ -2,7 +2,6 @@ server:
   port: 8086
   servlet:
     context-path: /wallet-service
-
 spring:
   application:
     name: Wallet-Service
