@@ -6,9 +6,7 @@ import com.core.walletservice.dto.TransactionResponse;
 import com.core.walletservice.entity.Transaction;
 import com.core.walletservice.entity.Wallet;
 import com.core.walletservice.enums.TransactionType;
-import com.core.walletservice.exceptions.BadRequestException;
-import com.core.walletservice.exceptions.InternalErrorException;
-import com.core.walletservice.exceptions.NotFoundException;
+import com.core.walletservice.exception.ApiException;
 import com.core.walletservice.repositories.TransactionRepository;
 import com.core.walletservice.repositories.WalletRepository;
 import com.core.walletservice.services.TransactionService;
@@ -47,7 +45,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public TransactionResponse deposit(TransactionRequest transactionRequest) {
         if (transactionRequest.getAmount() <= 0) {
-            throw new BadRequestException("Invalid amount");
+            //  throw new BadRequestException("Invalid amount");
+            throw new ApiException("Invalid amount");
+
         }
 
         try {
@@ -55,7 +55,8 @@ public class TransactionServiceImpl implements TransactionService {
 
             Wallet userWallet = walletRepo.findByUsername(transactionRequest.getUsername());
             if (userWallet == null) {
-                throw new NotFoundException("Wallet not found");
+                // throw new NotFoundException("Wallet not found");
+                throw new ApiException("Wallet not found");
             }
             double walletAmountBefore = userWallet.getBalance();
             double walletAmountAfter = walletAmountBefore + transactionRequest.getAmount();
@@ -77,7 +78,9 @@ public class TransactionServiceImpl implements TransactionService {
 
             return createTransactionResponse(userWallet, walletAmountBefore, walletAmountAfter, transactionRequest.getRefId());
         } catch (Exception exception) {
-            throw new InternalErrorException("Failed to deposit :", exception);
+            //throw new InternalErrorException("Failed to deposit :", exception);
+            throw new ApiException("Failed to deposit :" + exception);
+
         }
     }
 
@@ -85,7 +88,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public TransactionResponse withdraw(TransactionRequest transactionRequest) {
         if (transactionRequest.getAmount() <= 0) {
-            throw new BadRequestException("Invalid amount");
+            // throw new BadRequestException("Invalid amount");
+            throw new ApiException("Invalid amount");
+
         }
 
         try {
@@ -93,14 +98,16 @@ public class TransactionServiceImpl implements TransactionService {
 
             Wallet userWallet = walletRepo.findByUsername(transactionRequest.getUsername());
             if (userWallet == null) {
-                throw new NotFoundException("Wallet not found");
+                //   throw new NotFoundException("Wallet not found");
+                throw new ApiException("Wallet not found");
+
             }
 
             double walletAmountBefore = userWallet.getBalance();
             double walletAmountAfter = walletAmountBefore - transactionRequest.getAmount();
 
             if (walletAmountBefore < transactionRequest.getAmount()) {
-                throw new BadRequestException("Insufficient Funds");
+                throw new ApiException("Insufficient Funds");
             }
 
             checkRecentTransaction(transactionRequest.getUsername(), "withdraw", transactionRequest.getAmount());
@@ -120,7 +127,7 @@ public class TransactionServiceImpl implements TransactionService {
 
             return createTransactionResponse(userWallet, walletAmountBefore, walletAmountAfter, transactionRequest.getRefId());
         } catch (Exception e) {
-            throw new InternalErrorException("Failed to withdraw", e);
+            throw new ApiException("Failed to withdraw :" + e.getMessage());
         }
     }
 
@@ -129,7 +136,7 @@ public class TransactionServiceImpl implements TransactionService {
         if (recentTx != null) {
             Duration diff = Duration.between(recentTx.getCreatedAt(), Instant.now());
             if (diff.toMinutes() < 2) {
-                throw new BadRequestException("Please wait 2 minutes between transactions");
+                throw new ApiException("Please wait 2 minutes between transactions");
             }
         }
     }

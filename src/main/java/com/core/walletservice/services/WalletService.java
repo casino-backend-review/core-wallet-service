@@ -2,19 +2,16 @@ package com.core.walletservice.services;
 
 import com.core.walletservice.dto.*;
 import com.core.walletservice.entity.Wallet;
-import com.core.walletservice.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public interface WalletService {
 
-    Wallet createWallet(CreateWalletRequest walletRequest) throws Exception;
+    Wallet createWallet(CreateWalletRequest walletRequest);
 
-    Wallet getWallet(GetWalletRequest walletRequest) throws Exception;
+    Wallet getWallet(GetWalletRequest walletRequest);
 
-    Wallet updateWallet(UpdateWalletRequest walletRequest) throws Exception;
-
-    WalletResponse getBalance(GetWalletRequest balanceRequest) throws EntityNotFoundException;
+    Wallet updateWallet(UpdateWalletRequest walletRequest) ;
 
     List<Wallet> getWalletByUpline(GetWalletsByUplineRequest walletsByUplineRequest);
 }
