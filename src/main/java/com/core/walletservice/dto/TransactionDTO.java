@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TransactionDTO {
+    private String id;
     private String actionType;
     private String action;
     private double beforeBalance;
