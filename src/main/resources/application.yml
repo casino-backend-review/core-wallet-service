@@ -13,7 +13,6 @@ spring:
       port: 27017               # MongoDB server port
       database: testing           # Database name
       authentication-database: admin   # Authentication database (optional)
-     # uri: mongodb://localhost:27017/testDb
       uri: mongodb+srv://root:root@cluster0.fzri6qs.mongodb.net/testing
 springdoc:
   swagger-ui:
