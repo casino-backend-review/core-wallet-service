@@ -12,6 +12,7 @@ import com.core.walletservice.repositories.WalletRepository;
 import com.core.walletservice.services.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,10 +44,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public TransactionResponse deposit(TransactionRequest transactionRequest) {
+    public TransactionResponse deposit(TransactionRequest transactionRequest) throws ApiException {
         if (transactionRequest.getAmount() <= 0) {
             //  throw new BadRequestException("Invalid amount");
-            throw new ApiException("Invalid amount");
+            throw new ApiException("Invalid amount",1, HttpStatus.FORBIDDEN);
 
         }
 
@@ -56,7 +57,7 @@ public class TransactionServiceImpl implements TransactionService {
             Wallet userWallet = walletRepo.findByUsername(transactionRequest.getUsername());
             if (userWallet == null) {
                 // throw new NotFoundException("Wallet not found");
-                throw new ApiException("Wallet not found");
+                throw new ApiException("Wallet not found",1,HttpStatus.NO_CONTENT);
             }
             double walletAmountBefore = userWallet.getBalance();
             double walletAmountAfter = walletAmountBefore + transactionRequest.getAmount();
@@ -79,17 +80,17 @@ public class TransactionServiceImpl implements TransactionService {
             return createTransactionResponse(userWallet, walletAmountBefore, walletAmountAfter, transactionRequest.getRefId());
         } catch (Exception exception) {
             //throw new InternalErrorException("Failed to deposit :", exception);
-            throw new ApiException("Failed to deposit :" + exception);
+            throw new ApiException("Failed to deposit :" + exception.getMessage(),1,HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }
 
     @Override
     @Transactional
-    public TransactionResponse withdraw(TransactionRequest transactionRequest) {
+    public TransactionResponse withdraw(TransactionRequest transactionRequest) throws ApiException {
         if (transactionRequest.getAmount() <= 0) {
             // throw new BadRequestException("Invalid amount");
-            throw new ApiException("Invalid amount");
+            throw new ApiException("Invalid amount",1,HttpStatus.FORBIDDEN);
 
         }
 
@@ -99,7 +100,7 @@ public class TransactionServiceImpl implements TransactionService {
             Wallet userWallet = walletRepo.findByUsername(transactionRequest.getUsername());
             if (userWallet == null) {
                 //   throw new NotFoundException("Wallet not found");
-                throw new ApiException("Wallet not found");
+                throw new ApiException("Wallet not found",1,HttpStatus.NO_CONTENT);
 
             }
 
@@ -107,7 +108,7 @@ public class TransactionServiceImpl implements TransactionService {
             double walletAmountAfter = walletAmountBefore - transactionRequest.getAmount();
 
             if (walletAmountBefore < transactionRequest.getAmount()) {
-                throw new ApiException("Insufficient Funds");
+                throw new ApiException("Insufficient Funds",1,HttpStatus.FORBIDDEN);
             }
 
             checkRecentTransaction(transactionRequest.getUsername(), "withdraw", transactionRequest.getAmount());
@@ -127,16 +128,16 @@ public class TransactionServiceImpl implements TransactionService {
 
             return createTransactionResponse(userWallet, walletAmountBefore, walletAmountAfter, transactionRequest.getRefId());
         } catch (Exception e) {
-            throw new ApiException("Failed to withdraw :" + e.getMessage());
+            throw new ApiException("Failed to withdraw :" + e.getMessage(),1,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    private void checkRecentTransaction(String username, String action, double amount) {
+    private void checkRecentTransaction(String username, String action, double amount) throws ApiException {
         Transaction recentTx = transactionRepo.findRecentTransaction(username, action, amount);
         if (recentTx != null) {
             Duration diff = Duration.between(recentTx.getCreatedAt(), Instant.now());
             if (diff.toMinutes() < 2) {
-                throw new ApiException("Please wait 2 minutes between transactions");
+                throw new ApiException("Please wait 2 minutes between transactions",1,HttpStatus.FORBIDDEN);
             }
         }
     }

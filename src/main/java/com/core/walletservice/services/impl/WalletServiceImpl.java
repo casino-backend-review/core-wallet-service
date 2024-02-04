@@ -6,6 +6,7 @@ import com.core.walletservice.exception.ApiException;
 import com.core.walletservice.repositories.WalletRepository;
 import com.core.walletservice.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,26 +24,26 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Wallet getWallet(GetWalletRequest walletRequest){
+    public Wallet getWallet(GetWalletRequest walletRequest) throws ApiException {
         Wallet response = walletRepository.findByUsername(walletRequest.getUsername());
         if (response == null) {
-            throw new ApiException("Wallet not found");
+            throw new ApiException("Wallet not found",1, HttpStatus.NO_CONTENT);
         }
 
         return response;
     }
 
     @Override
-    public Wallet updateWallet(UpdateWalletRequest walletRequest)  {
+    public Wallet updateWallet(UpdateWalletRequest walletRequest) throws ApiException {
         Wallet response = walletRepository.updateBalanceByUsername(walletRequest.getUsername(), walletRequest.getAmountAfter());
         if (response == null) {
-            throw new ApiException("Wallet not found");
+            throw new ApiException("Wallet not found",1, HttpStatus.NO_CONTENT);
         }
         return response;
     }
 
     @Override
-    public Wallet createWallet(CreateWalletRequest walletRequest) {
+    public Wallet createWallet(CreateWalletRequest walletRequest) throws ApiException {
         Wallet response;
         try {
             Wallet newWallet = Wallet.builder().type(walletRequest.getType()).token(walletRequest.getToken()).
@@ -51,7 +52,7 @@ public class WalletServiceImpl implements WalletService {
 
             response = walletRepository.save(newWallet);
         } catch (Exception exception) {
-            throw new ApiException("Failed to create wallet");
+            throw new ApiException("Failed to create wallet",1, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return response;
     }

@@ -2,7 +2,9 @@ package com.core.walletservice.controller;
 
 import com.core.walletservice.dto.TransactionRequest;
 import com.core.walletservice.dto.TransactionResponse;
+import com.core.walletservice.exception.ApiException;
 import com.core.walletservice.exception.ApiResponseMessage;
+import com.core.walletservice.exception.Error;
 import com.core.walletservice.services.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +27,9 @@ public class TransactionController {
     public ResponseEntity<ApiResponseMessage<TransactionResponse>> deposit(@RequestBody TransactionRequest transactionRequest) {
         try {
             TransactionResponse response = transactionService.deposit(transactionRequest);
-            return ResponseEntity.ok(ApiResponseMessage.<TransactionResponse>builder().data(response).code(ApiResponseMessage.OK).type("ok").build());
-        } catch (Exception exception) {
-            ApiResponseMessage apiResponseMessage = new ApiResponseMessage(ApiResponseMessage.ERROR, exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponseMessage);
+            return ResponseEntity.ok(ApiResponseMessage.<TransactionResponse>builder().data(response).build());
+        }catch (ApiException exception) {
+            return getFailureResponseEntity(exception);
         }
     }
 
@@ -36,10 +37,15 @@ public class TransactionController {
     public ResponseEntity<ApiResponseMessage<TransactionResponse>> withdraw(@RequestBody TransactionRequest transactionRequest) {
         try {
             TransactionResponse response = transactionService.withdraw(transactionRequest);
-            return ResponseEntity.ok(ApiResponseMessage.<TransactionResponse>builder().data(response).code(ApiResponseMessage.OK).type("ok").build());
-        } catch (Exception exception) {
-            ApiResponseMessage apiResponseMessage = new ApiResponseMessage(ApiResponseMessage.ERROR, exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponseMessage);
+            return ResponseEntity.ok(ApiResponseMessage.<TransactionResponse>builder().data(response).build());
+        } catch (ApiException exception) {
+            return getFailureResponseEntity(exception);
         }
+    }
+
+    private static ResponseEntity getFailureResponseEntity(ApiException exception) {
+        HttpStatus status = exception.getStatus() != null ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+        ApiResponseMessage apiResponseMessage = new ApiResponseMessage(null, Error.builder().code(exception.getErrorCode()).message(exception.getMessage()).build());
+        return ResponseEntity.status(status).body(apiResponseMessage);
     }
 }
