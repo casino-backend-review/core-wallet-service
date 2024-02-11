@@ -63,4 +63,13 @@ public class WalletServiceImpl implements WalletService {
         List<Wallet> allByUpline = walletRepository.findAllByUpline(walletsByUplineRequest.getUserNames());
         return allByUpline;
     }
+
+    @Override
+    public void deleteWallet(String id) throws ApiException {
+        try{
+        walletRepository.deleteById(id);
+    } catch (Exception e) {
+        throw new ApiException("Error occurred while deleting specified wallet: " + e.getMessage(),1, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    }
 }

@@ -35,6 +35,16 @@ public class WalletController {
         }
     }
 
+    @DeleteMapping("/delete/{_id}")
+    public ResponseEntity<ApiResponseMessage<String>> deleteWallet(@PathVariable String _id) {
+        try {
+           walletService.deleteWallet(_id);
+            return ResponseEntity.ok(ApiResponseMessage.<String>builder().data("Delete wallet successfully").build());
+        } catch (ApiException exception) {
+            return getFailureResponseEntity(exception);
+        }
+    }
+
     @GetMapping("/get-balance/username/{username}")
     public ResponseEntity<ApiResponseMessage<Wallet>> getWallet(@PathVariable @NotBlank String username) throws Exception {
         try {

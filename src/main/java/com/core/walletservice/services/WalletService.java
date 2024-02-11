@@ -15,4 +15,6 @@ public interface WalletService {
     Wallet updateWallet(UpdateWalletRequest walletRequest) throws ApiException;
 
     List<Wallet> getWalletByUpline(GetWalletsByUplineRequest walletsByUplineRequest) throws ApiException;
+
+    void deleteWallet(String id) throws ApiException;
 }

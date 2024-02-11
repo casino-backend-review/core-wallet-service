@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 import java.util.UUID;
 
-public interface WalletRepository extends MongoRepository<Wallet, UUID>, CustomWalletRepository {
+public interface WalletRepository extends MongoRepository<Wallet, String>, CustomWalletRepository {
 
     Wallet findByUsername(String username) ;
 
