@@ -35,6 +35,7 @@ public class WalletController {
         }
     }
 
+
     @DeleteMapping("/delete/{_id}")
     public ResponseEntity<ApiResponseMessage<String>> deleteWallet(@PathVariable String _id) {
         try {
