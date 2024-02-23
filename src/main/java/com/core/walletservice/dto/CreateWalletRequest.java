@@ -1,13 +1,16 @@
 package com.core.walletservice.dto;
 
+import com.core.walletservice.enums.UserType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class CreateWalletRequest {
 
@@ -21,80 +24,12 @@ public class CreateWalletRequest {
     private double balance;
 
     @NotNull(message = "Type is required")
-    private String type;
+    private UserType type;
 
     @NotNull(message = "Upline is required")
     private String upline;
 
     private String refSale;
 
-    // Constructors, getters, and setters...
 
-    public CreateWalletRequest() {
-    }
-
-    // Additional constructor(s) can be added if needed
-
-    // Getters
-    public String getUsername() {
-        return username;
-    }
-
-    // Setters
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getUpline() {
-        return upline;
-    }
-
-    public void setUpline(String upline) {
-        this.upline = upline;
-    }
-
-    public String getRefSale() {
-        return refSale;
-    }
-
-    public void setRefSale(String refSale) {
-        this.refSale = refSale;
-    }
-
-    // toString method can be added for better logging and debugging
-    @Override
-    public String toString() {
-        return "CreateWalletRequest{" +
-                "username='" + username + '\'' +
-                ", token='" + token + '\'' +
-                ", balance=" + balance +
-                ", type='" + type + '\'' +
-                ", upline='" + upline + '\'' +
-                ", refSale='" + refSale + '\'' +
-                '}';
-    }
 }

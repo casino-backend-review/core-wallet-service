@@ -198,8 +198,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDTO.setFRunning(false);
         transactionDTO.setFRunningDate("");
 
-     //   kafkaTemplate.send("transaction", transactionDTO);
-
+        kafkaTemplate.send("transaction", transactionDTO);
     }
 
     private TransactionResponse createTransactionResponse(Wallet userWallet, double walletAmountBefore,

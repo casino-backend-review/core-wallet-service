@@ -1,5 +1,6 @@
 package com.core.walletservice.entity;
 
+import com.core.walletservice.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,11 +15,12 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Wallet {
+
     private String id; // Assuming you use a String representation for ObjectID
     private String token;
     private String username;
     private double balance;
-    private String type;// UserType
+    private UserType type;// UserType
     private String refSale;
     private String upline;
     private Date createdAt;

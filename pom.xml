@@ -49,7 +49,11 @@
 			<artifactId>spring-kafka</artifactId>
 
 		</dependency>
-
+		<!-- Confluent Schema Registry -->
+		<!--<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-schema-registry-client</artifactId>
+		</dependency>-->
 		<!-- Bean Validation API -->
 		<dependency>
 			<groupId>jakarta.validation</groupId>

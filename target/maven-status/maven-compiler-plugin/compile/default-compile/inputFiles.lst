@@ -5,7 +5,9 @@ C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\repositories\CustomTransactionRepository.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\WalletServiceApplication.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\controller\WalletController.java
+C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\config\CorsConfig.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\entity\ProcessTransaction.java
+C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\enums\UserType.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\repositories\impl\CustomTransactionRepositoryImpl.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\dto\DeleteWalletRequest.java
 C:\Users\Rajeshree Kopulwar\Documents\GitHub\latest_repo\core-wallet-service\src\main\java\com\core\walletservice\repositories\TransactionRepository.java
