@@ -33,9 +33,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final MongoTemplate mongoTemplate;
 
-    private final KafkaTemplate<String, TransactionDTO> kafkaTemplate;
+    private final KafkaTemplate<String,  String> kafkaTemplate;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepo, WalletRepository walletRepo, MongoTemplate mongoTemplate, KafkaTemplate<String, TransactionDTO> kafkaTemplate) {
+    public TransactionServiceImpl(TransactionRepository transactionRepo, WalletRepository walletRepo, MongoTemplate mongoTemplate, KafkaTemplate<String, String> kafkaTemplate) {
         this.transactionRepo = transactionRepo;
         this.walletRepo = walletRepo;
         this.mongoTemplate = mongoTemplate;
@@ -57,7 +57,7 @@ public class TransactionServiceImpl implements TransactionService {
             Wallet userWallet = walletRepo.findByUsername(transactionRequest.getUsername());
             if (userWallet == null) {
                 // throw new NotFoundException("Wallet not found");
-                throw new ApiException("Wallet not found",1,HttpStatus.NO_CONTENT);
+                throw new ApiException("Wallet not found",1,HttpStatus.FORBIDDEN);
             }
             double walletAmountBefore = userWallet.getBalance();
             double walletAmountAfter = walletAmountBefore + transactionRequest.getAmount();
@@ -100,7 +100,7 @@ public class TransactionServiceImpl implements TransactionService {
             Wallet userWallet = walletRepo.findByUsername(transactionRequest.getUsername());
             if (userWallet == null) {
                 //   throw new NotFoundException("Wallet not found");
-                throw new ApiException("Wallet not found",1,HttpStatus.NO_CONTENT);
+                throw new ApiException("Wallet not found",1,HttpStatus.FORBIDDEN);
 
             }
 
@@ -198,7 +198,9 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDTO.setFRunning(false);
         transactionDTO.setFRunningDate("");
 
-        kafkaTemplate.send("transaction", transactionDTO);
+        kafkaTemplate.send("transaction", "meaageProduced");
+
+        //kafkaTemplate.send("transaction", transactionDTO);
     }
 
     private TransactionResponse createTransactionResponse(Wallet userWallet, double walletAmountBefore,

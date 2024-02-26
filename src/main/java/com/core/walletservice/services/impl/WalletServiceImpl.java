@@ -27,7 +27,7 @@ public class WalletServiceImpl implements WalletService {
     public Wallet getWallet(GetWalletRequest walletRequest) throws ApiException {
         Wallet response = walletRepository.findByUsername(walletRequest.getUsername());
         if (response == null) {
-            throw new ApiException("Wallet not found",1, HttpStatus.NO_CONTENT);
+            throw new ApiException("Wallet not found",1, HttpStatus.FORBIDDEN);
         }
 
         return response;
@@ -37,7 +37,7 @@ public class WalletServiceImpl implements WalletService {
     public Wallet updateWallet(UpdateWalletRequest walletRequest) throws ApiException {
         Wallet response = walletRepository.updateBalanceByUsername(walletRequest.getUsername(), walletRequest.getAmountAfter());
         if (response == null) {
-            throw new ApiException("Wallet not found",1, HttpStatus.NO_CONTENT);
+            throw new ApiException("Wallet not found",1, HttpStatus.FORBIDDEN);
         }
         return response;
     }
