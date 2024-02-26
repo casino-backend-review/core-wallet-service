@@ -33,9 +33,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final MongoTemplate mongoTemplate;
 
-    private final KafkaTemplate<String,  String> kafkaTemplate;
+    private final KafkaTemplate<String, TransactionDTO> kafkaTemplate;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepo, WalletRepository walletRepo, MongoTemplate mongoTemplate, KafkaTemplate<String, String> kafkaTemplate) {
+    public TransactionServiceImpl(TransactionRepository transactionRepo, WalletRepository walletRepo, MongoTemplate mongoTemplate, KafkaTemplate<String, TransactionDTO> kafkaTemplate) {
         this.transactionRepo = transactionRepo;
         this.walletRepo = walletRepo;
         this.mongoTemplate = mongoTemplate;
@@ -198,7 +198,6 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDTO.setFRunning(false);
         transactionDTO.setFRunningDate("");
 
-        kafkaTemplate.send("transaction", "meaageProduced");
 
         //kafkaTemplate.send("transaction", transactionDTO);
     }
