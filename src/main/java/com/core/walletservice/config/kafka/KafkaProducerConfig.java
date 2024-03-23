@@ -1,6 +1,7 @@
 package com.core.walletservice.config.kafka;
 
 import com.core.walletservice.dto.TransactionDTO;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

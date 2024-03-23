@@ -14,6 +14,7 @@ spring:
       database: testing           # Database name
       authentication-database: admin   # Authentication database (optional)
       uri: mongodb+srv://root:root@cluster0.fzri6qs.mongodb.net/testing
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

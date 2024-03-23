@@ -65,9 +65,9 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void deleteWallet(String id) throws ApiException {
+    public void deleteWallet(String username) throws ApiException {
         try{
-        walletRepository.deleteById(id);
+        walletRepository.deleteByUsername(username);
     } catch (Exception e) {
         throw new ApiException("Error occurred while deleting specified wallet: " + e.getMessage(),1, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -36,10 +36,10 @@ public class WalletController {
     }
 
 
-    @DeleteMapping("/delete/{_id}")
-    public ResponseEntity<ApiResponseMessage<String>> deleteWallet(@PathVariable String _id) {
+    @DeleteMapping("/delete/username/{username}")
+    public ResponseEntity<ApiResponseMessage<String>> deleteWallet(@PathVariable String username) {
         try {
-           walletService.deleteWallet(_id);
+           walletService.deleteWallet(username);
             return ResponseEntity.ok(ApiResponseMessage.<String>builder().data("Delete wallet successfully").build());
         } catch (ApiException exception) {
             return getFailureResponseEntity(exception);

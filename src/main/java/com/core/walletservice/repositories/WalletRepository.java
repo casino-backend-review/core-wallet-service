@@ -16,4 +16,5 @@ public interface WalletRepository extends MongoRepository<Wallet, String>, Custo
     List< Wallet> findAllByUpline(List<String> usernameIds) ;
 
 
+    void deleteByUsername(String username);
 }

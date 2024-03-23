@@ -6,6 +6,7 @@ import com.core.walletservice.exception.ApiException;
 import com.core.walletservice.exception.ApiResponseMessage;
 import com.core.walletservice.exception.Error;
 import com.core.walletservice.services.TransactionService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
 
     private final TransactionService transactionService;
+
 
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;

@@ -20,5 +20,6 @@ public class TransactionRequest {
 
     private String remark;
     private String refId;
+    private String updatedBy;
 }
 
